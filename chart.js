@@ -31,7 +31,8 @@ function drawChart() {
   chart.draw(data, options);
 }
 
- function drawGID() {
+ 
+     function drawGID() {
       var queryString = encodeURIComponent('SELECT A, H, O, Q, R, U LIMIT 5 OFFSET 8');
 
       var query = new google.visualization.Query(
