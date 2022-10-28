@@ -36,7 +36,8 @@ function drawChart() {
       var queryString = encodeURIComponent('SELECT A, H, O, Q, R, U LIMIT 5 OFFSET 8');
 
       var query = new google.visualization.Query(
-          'https://docs.google.com/spreadsheets/d/1XWJLkAwch5GXAt_7zOFDcg8Wm8Xv29_8PWuuW15qmAE/gviz/tq?gid=0&headers=1&tq=' + queryString);
+          'https://docs.google.com/spreadsheets/d/1DVqIEoo3nVBCEaUJDWp9JKcLPnFk18HnvdLMQQrJ314/edit#gid=0&headers=1&tq='
+          //'https://docs.google.com/spreadsheets/d/1XWJLkAwch5GXAt_7zOFDcg8Wm8Xv29_8PWuuW15qmAE/gviz/tq?gid=0&headers=1&tq=' + queryString);
       query.send(handleQueryResponse);
     }
 
@@ -51,6 +52,4 @@ function drawChart() {
       chart.draw(data, { height: 400 });
     }
 
-    //A bit of test 
-    //A further test
-    
+V3
