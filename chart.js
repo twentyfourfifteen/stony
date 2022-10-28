@@ -12,13 +12,20 @@ google.charts.setOnLoadCallback(drawGID);
 google.charts.setOnLoadCallback(drawChart);
 
 // Set chart options
-var options = {
-    title: 'Estimated Turnout',
-  //'title': 'How Much Pizza I Ate Last Night',
-  //'width': 400,
-  'height': 400
-};
-
+var pieOptions = {
+    legend: {position: 'none'},
+    colors: ['#205782', '#da3838'],
+    isStacked: true,
+    fontName: 'none',
+  };
+  
+  var stackOptions = {
+    vAxis: {title: 'Ballots Cast'},
+    legend: {position: 'none'},
+    colors: ['#205782', '#cccccc', '#da3838'],
+    isStacked: true,
+    fontName: 'none',
+  };
 
 function drawGID() {
 // 
@@ -35,11 +42,17 @@ function handleQueryResponse(response) {
     alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
     return;
   }
+  
+// var pieOptions = {
+  //colors:['yellow','#004411'],
+  // 'height': 400,
+  //'font-family': none
+//}
 
 // Instantiate and draw our chart, passing in some options.
   var data = response.getDataTable();
   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-  chart.draw(data, options);
+  chart.draw(data, pieOptions);
 }
 
 
@@ -59,15 +72,9 @@ function handleQueryResponse2(response) {
     return;
   }
 
-  var options = {
-    title: 'Daily Voting Totals',
-    vAxis: {title: 'Ballots Cast'},
-    colors: ['blue', 'purple', 'red'],
-    isStacked: true
-  };
+
   
   var data = response.getDataTable();
   var chart = new google.visualization.SteppedAreaChart(document.getElementById('steps_div'));
-
-  chart.draw(data, options);
+  chart.draw(data, stackOptions);
 }
