@@ -1,55 +1,73 @@
+// Documentation
+// https://developers.google.com/chart/interactive/docs/spreadsheets
+// https://developers.google.com/chart/interactive/docs/querylanguage
+
 // Load the Visualization API and the corechart package.
-google.charts.load('current', {'packages':['corechart']});
+google.charts.load('current', {
+  'packages': ['corechart']
+});
 
 // Set a callback to run when the Google Visualization API is loaded.
 google.charts.setOnLoadCallback(drawGID);
+google.charts.setOnLoadCallback(drawChart);
 
-// Callback that creates and populates a data table,
-// instantiates the pie chart, passes in the data and
-// draws it.
-function drawChart() {
+// Set chart options
+var options = {
+    title: 'Estimated Turnout',
+  //'title': 'How Much Pizza I Ate Last Night',
+  //'width': 400,
+  'height': 400
+};
 
-  // Create the data table.
-  var data = new google.visualization.DataTable();
-  data.addColumn('string', 'Topping');
-  data.addColumn('number', 'Slices');
-  data.addRows([
-    ['Mushrooms', 3],
-    ['Onions', 1],
-    ['Olives', 1],
-    ['Zucchini', 1],
-    ['Pepperoni', 2]
-  ]);
 
-  // Set chart options
-  var options = {'title':'How Much Pizza I Ate Last Night',
-                 'width':400,
-                 'height':300};
+function drawGID() {
+// 
+  var queryString = encodeURIComponent('limit 36');
 
-  // Instantiate and draw our chart, passing in some options.
+// Pull chart data
+  var query = new google.visualization.Query(
+    'https://docs.google.com/spreadsheets/d/1DVqIEoo3nVBCEaUJDWp9JKcLPnFk18HnvdLMQQrJ314/gviz/tq?sheet=Sheet3&headers=1&tq=' + queryString);
+  query.send(handleQueryResponse);
+}
+
+function handleQueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
+  }
+
+// Instantiate and draw our chart, passing in some options.
+  var data = response.getDataTable();
   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
   chart.draw(data, options);
 }
 
- 
-     function drawGID() {
-      var queryString = encodeURIComponent('SELECT A, H, O, Q, R, U LIMIT 5 OFFSET 8');
 
-      var query = new google.visualization.Query(
-          'https://docs.google.com/spreadsheets/d/1DVqIEoo3nVBCEaUJDWp9JKcLPnFk18HnvdLMQQrJ314/edit#gid=0&headers=1&tq='
-          //'https://docs.google.com/spreadsheets/d/1XWJLkAwch5GXAt_7zOFDcg8Wm8Xv29_8PWuuW15qmAE/gviz/tq?gid=0&headers=1&tq=' + queryString);
-      query.send(handleQueryResponse);
-    }
+// LINES
 
-    function handleQueryResponse(response) {
-      if (response.isError()) {
-        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-        return;
-      }
+function drawChart() {  
+  var queryString = encodeURIComponent('limit 24 offset 12');
 
-      var data = response.getDataTable();
-      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-      chart.draw(data, { height: 400 });
-    }
+  var query = new google.visualization.Query(
+    'https://docs.google.com/spreadsheets/d/1DVqIEoo3nVBCEaUJDWp9JKcLPnFk18HnvdLMQQrJ314/gviz/tq?sheet=Sheet2&headers=1&tq=' + queryString);
+  query.send(handleQueryResponse2);
+}
 
-V3
+function handleQueryResponse2(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
+  }
+
+  var options = {
+    title: 'Daily Voting Totals',
+    vAxis: {title: 'Ballots Cast'},
+    colors: ['blue', 'purple', 'red'],
+    isStacked: true
+  };
+  
+  var data = response.getDataTable();
+  var chart = new google.visualization.SteppedAreaChart(document.getElementById('steps_div'));
+
+  chart.draw(data, options);
+}
