@@ -50,3 +50,5 @@ function drawChart() {
       var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
       chart.draw(data, { height: 400 });
     }
+
+    //A bit of test 
